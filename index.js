@@ -1,5 +1,6 @@
 const { Configuration, OpenAIApi } = require("openai");
 const express = require("express");
+var request=require('request');
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const operandClient = require("@operandinc/sdk").operandClient;
@@ -106,7 +107,27 @@ catch (error) {
 }
 
 })
+app.options('/about', function (req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.end();
+});
+app.get('/email',async (req, res) => {
 
+try{
+  request.get('http://flaskgpt-env.eba-t22b3rim.us-east-2.elasticbeanstalk.com/emailUser') .on('response', function(response) {
+    console.log(response.statusCode) // 200
+    // console.log(response.headers['content-type']) // 'image/png'
+  })
+  res.send('emailsent')}catch (error) {
+    console.error(error);
+    // res.json({
+    //   message: error.message
+    // });
+  }
+  
+})
 // Get Models Route
 
 // Start the server
